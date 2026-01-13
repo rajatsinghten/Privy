@@ -1,0 +1,22 @@
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - server
+    environment:
+      - VITE_API_URL=http://localhost:8000
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=false
+    # volumes:
+    #   - ./server:/app  # Uncomment for development with hot reload
