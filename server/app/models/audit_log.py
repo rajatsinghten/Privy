@@ -1,26 +1,23 @@
-"""
-Audit Log Model
-
-Model representing audit log entries for tracking data access and decisions.
-"""
+"""Audit Log Model - Database model for audit logging."""
 
 from datetime import datetime
-from typing import Optional
-from pydantic import BaseModel
+from sqlalchemy import Column, Integer, String, DateTime, Float, Text, JSON
+from app.core.database import Base
 
 
-class AuditLog(BaseModel):
-    """Audit log entry model."""
+class AuditLog(Base):
+    """Audit log database model."""
     
-    id: Optional[str] = None
-    timestamp: datetime
-    user_id: str
-    action: str
-    resource_type: str
-    resource_id: Optional[str] = None
-    details: Optional[dict] = None
-    ip_address: Optional[str] = None
-    user_agent: Optional[str] = None
+    __tablename__ = "audit_logs"
     
-    class Config:
-        from_attributes = True
+    id = Column(Integer, primary_key=True, index=True)
+    timestamp = Column(DateTime, default=datetime.utcnow, nullable=False)
+    requester_id = Column(String(255), nullable=False, index=True)
+    requester_role = Column(String(50), nullable=False)
+    purpose = Column(String(255), nullable=False)
+    location = Column(String(255))
+    data_sensitivity = Column(String(50))
+    decision = Column(String(50), nullable=False)
+    reason = Column(Text)
+    risk_score = Column(Float, nullable=False)
+    request_metadata = Column(JSON)

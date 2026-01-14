@@ -1,54 +1,60 @@
-"""
-Request Schemas
-
-Pydantic schemas for API request/response validation.
-"""
+"""Request Schemas - Pydantic schemas for API request/response validation."""
 
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 from pydantic import BaseModel, Field
 
 
-class DataRequestCreate(BaseModel):
-    """Schema for creating a new data request."""
+class DataAccessRequest(BaseModel):
+    """Schema for data access request."""
     
-    resource_type: str = Field(..., description="Type of resource being requested")
+    requester_id: str = Field(..., description="Identity of the requester")
+    role: str = Field(..., description="Role of the requester (admin, analyst, external)")
     purpose: str = Field(..., description="Purpose of the data request")
-    data_fields: List[str] = Field(default=[], description="Specific data fields requested")
+    location: str = Field(..., description="Location/jurisdiction of the requester")
+    data_sensitivity: str = Field(..., description="Sensitivity level of requested data (low, medium, high)")
 
 
-class DataRequestResponse(BaseModel):
-    """Schema for data request response."""
+class DataAccessResponse(BaseModel):
+    """Schema for data access response."""
     
-    id: str
-    status: str
-    resource_type: str
+    decision: str = Field(..., description="Final decision: ALLOW or DENY")
+    reason: str = Field(..., description="Reason for the decision")
+    risk_score: float = Field(..., description="Risk score between 0 and 1")
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    policy_checks: Dict[str, Any] = Field(default_factory=dict)
+    consent_status: Dict[str, Any] = Field(default_factory=dict)
+
+
+class AuditLogResponse(BaseModel):
+    """Schema for audit log response."""
+    
+    id: int
+    timestamp: datetime
+    requester_id: str
+    requester_role: str
     purpose: str
-    data_fields: List[str]
-    created_at: datetime
-    updated_at: Optional[datetime] = None
-    
-    class Config:
-        from_attributes = True
-
-
-class DecisionCreate(BaseModel):
-    """Schema for creating a decision."""
-    
-    request_id: str
-    approved: bool
-    reason: Optional[str] = None
-
-
-class DecisionResponse(BaseModel):
-    """Schema for decision response."""
-    
-    id: str
-    request_id: str
-    approved: bool
+    location: Optional[str]
+    data_sensitivity: Optional[str]
+    decision: str
     reason: Optional[str]
-    decided_at: datetime
-    decided_by: str
+    risk_score: float
+    request_metadata: Optional[Dict[str, Any]]
     
     class Config:
         from_attributes = True
+
+
+class LoginRequest(BaseModel):
+    """Schema for login request."""
+    
+    username: str
+    password: str
+
+
+class LoginResponse(BaseModel):
+    """Schema for login response."""
+    
+    access_token: str
+    token_type: str = "bearer"
+    role: str
