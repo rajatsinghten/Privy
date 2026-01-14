@@ -1,35 +1,48 @@
-import axios from 'axios';
+const API_BASE = "http://localhost:8000/api";
 
-// Base API client configuration
-const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+export async function loginUser(username, password) {
+  const res = await fetch(`${API_BASE}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, password }),
+  });
 
-// JWT interceptor stub
-apiClient.interceptors.request.use(
-  (config) => {
-    // TODO: Retrieve token from storage and attach to headers
-    const token = null; // Placeholder: localStorage.getItem('token')
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+  if (!res.ok) {
+    throw new Error("Login failed");
   }
-);
 
-// Response interceptor stub
-apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    // TODO: Handle 401 unauthorized, token refresh, etc.
-    return Promise.reject(error);
+  return await res.json();
+}
+
+export async function requestDataAccess(payload, token) {
+  const res = await fetch(`${API_BASE}/request-data`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    throw new Error("Request failed");
   }
-);
 
-export default apiClient;
+  return await res.json();
+}
+
+export async function fetchAuditLogs(token) {
+  const res = await fetch(`${API_BASE}/audit-logs`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Audit log fetch failed");
+  }
+
+  return await res.json();
+}
