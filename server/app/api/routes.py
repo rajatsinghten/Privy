@@ -43,21 +43,53 @@ from app.services.legal_compliance import legal_compliance_engine
 
 router = APIRouter()
 
+# Demo users with Indian names and profiles
+# Passwords: Use the username + "123" (e.g., rajat123, priya123)
 MOCK_USERS = {
-    "admin": {
-        "username": "admin",
-        "password": "$2b$12$MyVkelvvEzzv2D6wRiEWbOwGGkPeVULUCGPemOddPfB0SEkJlBvGe",  # admin123
-        "role": "admin"
+    "rajat": {
+        "username": "rajat",
+        "password": "$2b$12$kGpUKVlo3CLweHbm4P8ciu9O1TovXySwabQGueK031At1d1ZtjuVy",  # rajat123
+        "role": "admin",
+        "full_name": "Rajat Sharma",
+        "email": "rajat.sharma@privy.io",
+        "department": "Engineering",
+        "location": "Bengaluru"
     },
-    "analyst": {
-        "username": "analyst",
-        "password": "$2b$12$xtxGKB3L5zGj6ZthWvuqoeOrjBHMT9LIIdCDHf9vmoVmvtH2bxyoG",  # analyst123
-        "role": "analyst"
+    "priya": {
+        "username": "priya",
+        "password": "$2b$12$6GmQscFMQljM7iwqEVu24.CCIvHAkRBmAoFA8MV31rm1pK12t11Dy",  # priya123
+        "role": "analyst",
+        "full_name": "Priya Patel",
+        "email": "priya.patel@privy.io",
+        "department": "Data Science",
+        "location": "Mumbai"
     },
-    "external": {
-        "username": "external",
-        "password": "$2b$12$0qFWFluaPW6SkPQAZR9aZebuWxX1YM96J1KuoTomWsOVCYYfJZDzK",  # external123
-        "role": "external"
+    "arjun": {
+        "username": "arjun",
+        "password": "$2b$12$DqaWmaaLnmNX8rOoalvIqO9KyaN5ABpcrytPRGCTiWbRf5euiQIjq",  # arjun123
+        "role": "analyst",
+        "full_name": "Arjun Mehta",
+        "email": "arjun.mehta@privy.io",
+        "department": "Product Analytics",
+        "location": "Delhi"
+    },
+    "kavya": {
+        "username": "kavya",
+        "password": "$2b$12$4fQ5Buv1pFDBQFqHwcLyN.nuB4UB5b6t0zcMgc8HGkl2aFAvtVIVK",  # kavya123
+        "role": "external",
+        "full_name": "Kavya Krishnan",
+        "email": "kavya.k@partner.com",
+        "department": "External Partner",
+        "location": "Chennai"
+    },
+    "vikram": {
+        "username": "vikram",
+        "password": "$2b$12$a.j4O6Ywg/OiScZ4ZSMPy.8sQgE/dvcyAzXA0wjJ.N/G1tj0dKtBy",  # vikram123
+        "role": "external",
+        "full_name": "Vikram Reddy",
+        "email": "vikram.r@vendor.in",
+        "department": "Third Party Vendor",
+        "location": "Hyderabad"
     }
 }
 
@@ -66,6 +98,41 @@ MOCK_USERS = {
 async def health_check():
     """Health check endpoint."""
     return {"status": "ok", "service": "Privy API Gateway"}
+
+
+@router.get("/auth/me")
+async def get_current_user_profile(current_user: dict = Depends(get_current_user)):
+    """Get current user's profile information."""
+    username = current_user.get("sub")
+    user = MOCK_USERS.get(username)
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Return profile without password
+    return {
+        "username": user["username"],
+        "role": user["role"],
+        "full_name": user.get("full_name", user["username"]),
+        "email": user.get("email", f"{user['username']}@privy.io"),
+        "department": user.get("department", "General"),
+        "location": user.get("location", "Unknown")
+    }
+
+
+@router.get("/users")
+async def list_users(current_user: dict = Depends(get_current_user)):
+    """List all users (without passwords) - for admin demo."""
+    users = []
+    for username, user in MOCK_USERS.items():
+        users.append({
+            "username": user["username"],
+            "role": user["role"],
+            "full_name": user.get("full_name", user["username"]),
+            "department": user.get("department", "General"),
+            "location": user.get("location", "Unknown")
+        })
+    return users
 
 
 @router.post("/auth/login", response_model=LoginResponse)
@@ -498,6 +565,91 @@ async def get_all_laws(
 ):
     """Get summary of all supported privacy laws."""
     return legal_compliance_engine.get_all_laws_summary()
+
+
+@router.post("/compliance/applicable-laws")
+async def get_applicable_laws(
+    payload: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get applicable laws based on controller and subject locations."""
+    from app.services.legal_compliance import Jurisdiction
+    
+    controller_loc = payload.get("data_controller_location", "US")
+    subject_loc = payload.get("data_subject_location", "US")
+    
+    applicable = []
+    all_laws = legal_compliance_engine.get_all_laws_summary()
+    
+    # Determine which laws apply
+    locations = {controller_loc, subject_loc}
+    strictest = None
+    
+    for law in all_laws.get("laws", []):
+        jurisdiction = law.get("jurisdiction")
+        if jurisdiction in locations or jurisdiction == "EU" and subject_loc in ["EU", "DE", "FR", "IT", "ES", "NL"]:
+            law["is_strictest"] = False
+            applicable.append(law)
+            
+            # Track strictest (GDPR is usually strictest)
+            if jurisdiction == "EU":
+                strictest = law
+    
+    if strictest:
+        strictest["is_strictest"] = True
+    elif applicable:
+        applicable[0]["is_strictest"] = True
+    
+    return {
+        "applicable_laws": applicable,
+        "resolution_strategy": "Apply strictest requirements from each applicable law"
+    }
+
+
+@router.post("/compliance/requirements")
+async def get_merged_requirements(
+    payload: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get merged requirements from applicable jurisdictions."""
+    processing_purpose = payload.get("processing_purpose", "service_delivery")
+    data_categories = payload.get("data_categories", ["personal"])
+    jurisdictions = payload.get("jurisdictions", ["US"])
+    
+    requirements = {
+        "consent": [],
+        "data_subject_rights": [],
+        "security_measures": [],
+        "breach_notification": [],
+        "data_retention": []
+    }
+    
+    # Build merged requirements based on jurisdictions
+    if "EU" in jurisdictions or any(j in jurisdictions for j in ["DE", "FR", "IT", "ES"]):
+        requirements["consent"].extend(["Explicit opt-in consent required", "Consent must be freely given, specific, informed"])
+        requirements["data_subject_rights"].extend(["Right to access", "Right to rectification", "Right to erasure", "Right to portability"])
+        requirements["breach_notification"].append("Notify authority within 72 hours")
+    
+    if "US" in jurisdictions:
+        requirements["consent"].append("Opt-out mechanism for sale of data")
+        requirements["data_subject_rights"].extend(["Right to know", "Right to delete", "Right to opt-out of sale"])
+    
+    if "IN" in jurisdictions:
+        requirements["consent"].append("Notice and consent required")
+        requirements["data_subject_rights"].extend(["Right to access", "Right to correction", "Right to erasure"])
+        requirements["breach_notification"].append("Notify Data Protection Board")
+    
+    # Add category-specific requirements
+    if "sensitive" in data_categories or "health" in data_categories:
+        requirements["security_measures"].extend(["Encryption at rest", "Access logging", "Enhanced security measures"])
+    
+    if "children" in data_categories:
+        requirements["consent"].append("Verifiable parental consent required")
+    
+    # Data retention defaults
+    requirements["data_retention"] = ["Retain only as long as necessary", "Document retention periods", "Implement deletion procedures"]
+    
+    return {"requirements": requirements}
 
 
 @router.get("/compliance/law/{jurisdiction}")

@@ -339,6 +339,42 @@ export async function getAllLaws(token) {
   return await res.json();
 }
 
+export async function getApplicableLaws(payload, token) {
+  const res = await fetch(`${API_BASE}/compliance/applicable-laws`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({}));
+    throw new Error(errorBody.detail || "Failed to get applicable laws");
+  }
+
+  return await res.json();
+}
+
+export async function getRequirements(payload, token) {
+  const res = await fetch(`${API_BASE}/compliance/requirements`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({}));
+    throw new Error(errorBody.detail || "Failed to get requirements");
+  }
+
+  return await res.json();
+}
+
 export async function getLawDetails(jurisdiction, token) {
   const res = await fetch(`${API_BASE}/compliance/law/${jurisdiction}`, {
     headers: {
