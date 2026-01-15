@@ -15,7 +15,7 @@ export default function Login() {
     setError("");
     try {
       const res = await loginUser(username, password);
-      login(res.access_token, res.role);
+      login(res.access_token, res.role, username);
       navigate("/request");
     } catch {
       setError("Invalid credentials");

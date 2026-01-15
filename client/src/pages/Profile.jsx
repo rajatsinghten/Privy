@@ -1,11 +1,11 @@
 import { useAuth } from "../context/AuthContext";
 
 export default function Profile() {
-  const { user, logout } = useAuth();
+  const { username, role, logout } = useAuth();
 
   // Mapping roles to security clearance levels for a better UI
-  const getClearance = (role) => {
-    switch (role?.toLowerCase()) {
+  const getClearance = (userRole) => {
+    switch (userRole?.toLowerCase()) {
       case 'admin': return { level: 'Level 5 - Global Overseer', color: '#ef4444' };
       case 'analyst': return { level: 'Level 3 - Internal Auditor', color: '#3b82f6' };
       case 'external': return { level: 'Level 1 - Restricted Guest', color: '#64748b' };
@@ -13,7 +13,7 @@ export default function Profile() {
     }
   };
 
-  const clearance = getClearance(user?.role);
+  const clearance = getClearance(role);
 
   return (
     <div style={styles.page}>
@@ -21,11 +21,11 @@ export default function Profile() {
         <div style={styles.card}>
           <div style={styles.header}>
             <div style={styles.avatar}>
-              {user?.username?.charAt(0).toUpperCase() || "U"}
+              {username?.charAt(0).toUpperCase() || "U"}
             </div>
-            <h1 style={styles.username}>{user?.username || "Guest User"}</h1>
+            <h1 style={styles.username}>{username || "Guest User"}</h1>
             <span style={{...styles.badge, backgroundColor: clearance.color}}>
-              {user?.role?.toUpperCase()}
+              {role?.toUpperCase()}
             </span>
           </div>
 

@@ -11,6 +11,13 @@ import Policies from "./pages/Policies";
 import RiskEngine from "./pages/RiskEngine";
 import Profile from "./pages/Profile";
 
+// Advanced Privacy Features
+import SelfDestructingTokens from "./pages/SelfDestructingTokens";
+import PrivacyBudget from "./pages/PrivacyBudget";
+import AdaptiveMasking from "./pages/AdaptiveMasking";
+import RTBFTrigger from "./pages/RTBFTrigger";
+import LegalCompliance from "./pages/LegalCompliance";
+
 /**
  * Protected Route Wrapper
  * Checks for a valid JWT token before allowing access to the dashboard.
@@ -56,6 +63,13 @@ export default function App() {
                   <Route path="/policies" element={<Policies />} />
                   <Route path="/risk" element={<RiskEngine />} />
                   <Route path="/profile" element={<Profile />} />
+                  
+                  {/* Advanced Privacy Features */}
+                  <Route path="/tokens" element={<SelfDestructingTokens />} />
+                  <Route path="/privacy-budget" element={<PrivacyBudget />} />
+                  <Route path="/masking" element={<AdaptiveMasking />} />
+                  <Route path="/rtbf" element={<RTBFTrigger />} />
+                  <Route path="/compliance" element={<LegalCompliance />} />
                   
                   {/* Default redirect for authenticated users */}
                   <Route path="*" element={<Navigate to="/request" replace />} />

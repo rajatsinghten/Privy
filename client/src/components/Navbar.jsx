@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -5,6 +6,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const { logout } = useAuth();
+  const [showPrivacyDropdown, setShowPrivacyDropdown] = useState(false);
 
   const links = [
     { name: "Request Access", path: "/request" },
@@ -13,6 +15,16 @@ export default function Navbar() {
     { name: "Policies", path: "/policies" },
     { name: "Risk Engine", path: "/risk" },
   ];
+
+  const privacyFeatures = [
+    { name: "🔑 Self-Destructing Tokens", path: "/tokens" },
+    { name: "📊 Privacy Budget (ε)", path: "/privacy-budget" },
+    { name: "🎭 Adaptive Masking", path: "/masking" },
+    { name: "🗑️ RTBF Trigger", path: "/rtbf" },
+    { name: "⚖️ Legal Compliance", path: "/compliance" },
+  ];
+
+  const isPrivacyFeatureActive = privacyFeatures.some(f => location.pathname === f.path);
 
   // Global Nav Container
   const navContainerStyle = {
@@ -120,6 +132,70 @@ export default function Navbar() {
               {l.name}
             </div>
           ))}
+
+          {/* Privacy Features Dropdown */}
+          <div 
+            style={{ position: "relative" }}
+            onMouseEnter={() => setShowPrivacyDropdown(true)}
+            onMouseLeave={() => setShowPrivacyDropdown(false)}
+          >
+            <div 
+              style={{
+                ...linkStyle(isPrivacyFeatureActive ? location.pathname : ""),
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+                backgroundColor: isPrivacyFeatureActive ? "#f1f5f9" : "transparent",
+                fontWeight: isPrivacyFeatureActive ? "700" : "500",
+                color: isPrivacyFeatureActive ? "#1e3a8a" : "#475569",
+              }}
+            >
+              Privacy+ ▾
+            </div>
+            {showPrivacyDropdown && (
+              <div style={{
+                position: "absolute",
+                top: "100%",
+                left: "0",
+                background: "#fff",
+                borderRadius: "12px",
+                boxShadow: "0 10px 40px rgba(0,0,0,0.15)",
+                padding: "8px 0",
+                minWidth: "220px",
+                zIndex: 1001,
+                border: "1px solid #e2e8f0"
+              }}>
+                {privacyFeatures.map((f) => (
+                  <div
+                    key={f.path}
+                    onClick={() => {
+                      navigate(f.path);
+                      setShowPrivacyDropdown(false);
+                    }}
+                    style={{
+                      padding: "12px 16px",
+                      fontSize: "14px",
+                      fontWeight: location.pathname === f.path ? "600" : "400",
+                      color: location.pathname === f.path ? "#1e3a8a" : "#475569",
+                      background: location.pathname === f.path ? "#f1f5f9" : "transparent",
+                      cursor: "pointer",
+                      transition: "all 0.15s ease"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = "#f8fafc";
+                      e.target.style.color = "#1e3a8a";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = location.pathname === f.path ? "#f1f5f9" : "transparent";
+                      e.target.style.color = location.pathname === f.path ? "#1e3a8a" : "#475569";
+                    }}
+                  >
+                    {f.name}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* RIGHT: PROFILE + LOGOUT */}
