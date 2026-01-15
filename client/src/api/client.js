@@ -16,18 +16,30 @@ export async function loginUser(username, password) {
   return await res.json();
 }
 
+/**
+ * Data Request Evaluation
+ * Matches README payload: { requester_id, role, purpose, location, data_sensitivity }
+ */
 export async function requestDataAccess(payload, token) {
   const res = await fetch(`${API_BASE}/request-data`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`, 
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({
+      requester_id: payload.requester_id,
+      role: payload.role,
+      purpose: payload.purpose,
+      location: payload.location,
+      data_sensitivity: payload.data_sensitivity
+    }),
   });
 
   if (!res.ok) {
-    throw new Error("Request failed");
+    const errorBody = await res.json().catch(() => ({}));
+    // If backend returns a 401, this throws the "Could not validate credentials" message
+    throw new Error(errorBody.detail || "Engine evaluation failed");
   }
 
   return await res.json();
@@ -36,7 +48,7 @@ export async function requestDataAccess(payload, token) {
 export async function fetchAuditLogs(token) {
   const res = await fetch(`${API_BASE}/audit-logs`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
     },
   });
 

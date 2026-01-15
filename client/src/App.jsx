@@ -9,31 +9,44 @@ import AuditLogs from "./pages/AuditLogs";
 import Consent from "./pages/Consent";
 import Policies from "./pages/Policies";
 import RiskEngine from "./pages/RiskEngine";
+import Profile from "./pages/Profile";
 
+/**
+ * Protected Route Wrapper
+ * Checks for a valid JWT token before allowing access to the dashboard.
+ */
 function Protected({ children }) {
-  const auth = useAuth();
-  if (!auth || !auth.token) {
-    return <Navigate to="/login" />;
+  const { token } = useAuth();
+  
+  if (!token) {
+    return <Navigate to="/login" replace />;
   }
+  
   return children;
 }
 
 export default function App() {
   return (
     <Routes>
+      {/* Public Route */}
       <Route path="/login" element={<Login />} />
 
+      {/* Protected Dashboard Routes */}
       <Route
         path="/*"
         element={
           <Protected>
-            <div style={{ display: "flex", minHeight: "100vh" }}>
+            <div style={{ display: "flex", minHeight: "100vh", background: "#f8fafc" }}>
+              {/* Sidebar Navigation */}
               <Navbar />
+              
+              {/* Main Content Area */}
               <main
                 style={{
                   flex: 1,
-                  padding: 32,
-                  background: "#f6f5f3", // nude / formal
+                  padding: "20px",
+                  overflowY: "auto",
+                  display: "block"
                 }}
               >
                 <Routes>
@@ -42,7 +55,10 @@ export default function App() {
                   <Route path="/consent" element={<Consent />} />
                   <Route path="/policies" element={<Policies />} />
                   <Route path="/risk" element={<RiskEngine />} />
-                  <Route path="*" element={<Navigate to="/request" />} />
+                  <Route path="/profile" element={<Profile />} />
+                  
+                  {/* Default redirect for authenticated users */}
+                  <Route path="*" element={<Navigate to="/request" replace />} />
                 </Routes>
               </main>
             </div>

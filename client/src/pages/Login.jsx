@@ -23,171 +23,163 @@ export default function Login() {
   };
 
   return (
-    <div style={styles.pageBackground}>
-      <div style={styles.container}>
-        {/* LEFT SIDE: PROJECT INFO */}
-        <div style={styles.infoSection}>
-          <div style={styles.badge}>v1.0 Deployment</div>
-          <h1 style={styles.mainTitle}>Privy</h1>
-          <h2 style={styles.subTitle}>Privacy-Aware API Gateway</h2>
-          
-          <div style={styles.featureList}>
-            <div style={styles.featureItem}>
-              <span style={styles.dot}></span>
-              <div>
-                <strong>Policy Engine</strong>
-                <p style={styles.featureDesc}>Rule-based enforcement for purpose and jurisdiction.</p>
-              </div>
+    <div style={styles.page}>
+      <div style={styles.splitLayout}>
+        
+        {/* LEFT SIDE: IMAGE/BRAND AREA */}
+        <div style={styles.imageSection}>
+          <div style={styles.overlayText}>
+            <div style={styles.logoBox}>
+              <div style={styles.logoIcon} />
+              <span style={styles.logoText}>Privy.</span>
             </div>
-            <div style={styles.featureItem}>
-              <span style={styles.dot}></span>
-              <div>
-                <strong>Risk Engine</strong>
-                <p style={styles.featureDesc}>Heuristic-based risk scoring with configurable thresholds.</p>
+            <h1 style={styles.heroText}>Secure Data Access Gateway</h1>
+            <p style={styles.heroSub}>
+              Advanced privacy enforcement engine for enterprise data governance and risk management.
+            </p>
+          </div>
+          {/* Using a high-quality professional abstract image */}
+          <img 
+            src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2070" 
+            alt="Security" 
+            style={styles.bgImage} 
+          />
+        </div>
+
+        {/* RIGHT SIDE: SIGN-IN FORM */}
+        <div style={styles.formSection}>
+          <div style={styles.formWrapper}>
+            <h2 style={styles.formTitle}>Sign In</h2>
+            <p style={styles.formSub}>Enter your credentials to access the console</p>
+
+            <form onSubmit={handleSubmit} style={styles.form}>
+              <div style={styles.inputGroup}>
+                <label style={styles.label}>Username</label>
+                <input
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  style={styles.input}
+                  placeholder="e.g. admin"
+                />
               </div>
-            </div>
-            <div style={styles.featureItem}>
-              <span style={styles.dot}></span>
-              <div>
-                <strong>Consent Manager</strong>
-                <p style={styles.featureDesc}>Real-time validation of user consent storage.</p>
+
+              <div style={styles.inputGroup}>
+                <label style={styles.label}>Password</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={styles.input}
+                  placeholder="••••••••"
+                />
+              </div>
+
+              {error && <div style={styles.errorText}>{error}</div>}
+
+              <button style={styles.loginBtn}>Login to Dashboard</button>
+            </form>
+
+            <div style={styles.demoBox}>
+              <span style={styles.demoTitle}>DEMO CREDENTIALS</span>
+              <div style={styles.demoDetails}>
+                <span><strong>Admin:</strong> admin / admin123</span>
+                <span><strong>Analyst:</strong> analyst / analyst123</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* RIGHT SIDE: CLEAN GLASS CARD */}
-        <div style={styles.cardSection}>
-          <form style={styles.glassCard} onSubmit={handleSubmit}>
-            <h3 style={styles.cardHeader}>Console Login</h3>
-            
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Username</label>
-              <input
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                style={styles.input}
-                placeholder="Enter your role"
-              />
-            </div>
-
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                style={styles.input}
-                placeholder="••••••••"
-              />
-            </div>
-
-            {error && <div style={styles.errorText}>{error}</div>}
-
-            <button style={styles.loginBtn}>Authorize Access</button>
-
-            <div style={styles.demoHint}>
-              <strong>Demo Credentials:</strong><br/>
-              admin / admin123 • analyst / analyst123
-            </div>
-          </form>
-        </div>
       </div>
     </div>
   );
 }
 
 const styles = {
-  pageBackground: {
+  page: {
     height: "100vh",
     width: "100vw",
-    // Deep slate gradient - clean, pro, no distracting images
-    background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
+    background: "#ffffff",
+    fontFamily: "'Inter', sans-serif",
+    overflow: "hidden",
+  },
+  splitLayout: {
+    display: "flex",
+    height: "100%",
+  },
+  imageSection: {
+    flex: "1.2",
+    position: "relative",
+    background: "#f1f5f9",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontFamily: "'Inter', sans-serif",
-    color: "#f8fafc",
-    overflow: "hidden",
   },
-  container: {
-    display: "flex",
+  bgImage: {
     width: "100%",
-    maxWidth: "1100px",
-    padding: "0 40px",
-    alignItems: "center",
-    justifyContent: "space-between",
+    height: "100%",
+    objectFit: "cover",
   },
-  infoSection: {
-    flex: 1,
-    paddingRight: "80px",
-  },
-  badge: {
-    color: "#38bdf8",
-    fontSize: "12px",
-    fontWeight: "700",
-    textTransform: "uppercase",
-    letterSpacing: "1.5px",
-    marginBottom: "16px",
-  },
-  mainTitle: {
-    fontSize: "64px",
-    fontWeight: "800",
-    margin: 0,
+  overlayText: {
+    position: "absolute",
+    zIndex: 2,
+    left: "60px",
+    bottom: "60px",
+    right: "60px",
     color: "#fff",
+    background: "rgba(15, 23, 42, 0.4)",
+    backdropFilter: "blur(10px)",
+    padding: "40px",
+    borderRadius: "20px",
   },
-  subTitle: {
+  logoBox: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    marginBottom: "20px",
+  },
+  logoIcon: {
+    width: "12px",
+    height: "12px",
+    background: "#3b82f6",
+    borderRadius: "2px",
+  },
+  logoText: {
     fontSize: "20px",
-    fontWeight: "400",
-    color: "#94a3b8",
-    marginTop: "4px",
-    marginBottom: "40px",
+    fontWeight: "800",
+    letterSpacing: "-0.5px",
   },
-  featureList: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "24px",
+  heroText: {
+    fontSize: "36px",
+    fontWeight: "800",
+    margin: "0 0 16px 0",
+    lineHeight: "1.1",
   },
-  featureItem: {
-    display: "flex",
-    gap: "16px",
-    alignItems: "flex-start",
-  },
-  dot: {
-    width: "8px",
-    height: "8px",
-    borderRadius: "50%",
-    backgroundColor: "#38bdf8",
-    marginTop: "6px",
-    boxShadow: "0 0 10px #38bdf8",
-  },
-  featureDesc: {
-    margin: "4px 0 0 0",
-    fontSize: "14px",
-    color: "#64748b",
+  heroSub: {
+    fontSize: "16px",
+    opacity: "0.9",
     lineHeight: "1.5",
   },
-  cardSection: {
-    flex: 0.8,
+  formSection: {
+    flex: "1",
     display: "flex",
-    justifyContent: "flex-end",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "40px",
   },
-  glassCard: {
+  formWrapper: {
     width: "100%",
     maxWidth: "400px",
-    background: "rgba(255, 255, 255, 0.03)",
-    backdropFilter: "blur(12px)",
-    WebkitBackdropFilter: "blur(12px)",
-    borderRadius: "24px",
-    border: "1px solid rgba(255, 255, 255, 0.1)",
-    padding: "48px",
-    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
   },
-  cardHeader: {
-    fontSize: "24px",
-    fontWeight: "700",
-    marginBottom: "32px",
-    textAlign: "center",
+  formTitle: {
+    fontSize: "32px",
+    fontWeight: "800",
+    color: "#0f172a",
+    margin: "0 0 8px 0",
+  },
+  formSub: {
+    fontSize: "15px",
+    color: "#64748b",
+    marginBottom: "40px",
   },
   inputGroup: {
     marginBottom: "24px",
@@ -195,48 +187,57 @@ const styles = {
   label: {
     display: "block",
     fontSize: "13px",
-    fontWeight: "600",
-    color: "#94a3b8",
+    fontWeight: "700",
+    color: "#475569",
     marginBottom: "8px",
   },
   input: {
     width: "100%",
-    padding: "12px 16px",
-    borderRadius: "12px",
-    background: "rgba(15, 23, 42, 0.5)",
-    border: "1px solid rgba(255, 255, 255, 0.1)",
-    color: "#fff",
+    padding: "14px",
+    borderRadius: "8px",
+    border: "1px solid #e2e8f0",
+    background: "#f8fafc",
     fontSize: "15px",
     outline: "none",
     boxSizing: "border-box",
   },
   loginBtn: {
     width: "100%",
-    padding: "14px",
-    background: "#38bdf8",
-    color: "#0f172a",
+    padding: "16px",
+    background: "#0f172a", // Dark professional black/blue button
+    color: "#fff",
     border: "none",
-    borderRadius: "12px",
+    borderRadius: "8px",
     fontWeight: "700",
-    fontSize: "16px",
+    fontSize: "15px",
     cursor: "pointer",
-    marginTop: "8px",
-    transition: "transform 0.2s",
+    marginTop: "10px",
   },
   errorText: {
-    color: "#fb7185",
+    color: "#ef4444",
     fontSize: "13px",
     textAlign: "center",
     marginBottom: "16px",
   },
-  demoHint: {
-    marginTop: "32px",
-    padding: "16px",
-    background: "rgba(56, 189, 248, 0.05)",
+  demoBox: {
+    marginTop: "40px",
+    padding: "20px",
+    background: "#f1f5f9",
     borderRadius: "12px",
-    fontSize: "12px",
-    color: "#7dd3fc",
-    textAlign: "center",
-    lineHeight: "1.6",
+  },
+  demoTitle: {
+    display: "block",
+    fontSize: "11px",
+    fontWeight: "800",
+    color: "#64748b",
+    marginBottom: "8px",
+    letterSpacing: "0.5px",
+  },
+  demoDetails: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "4px",
+    fontSize: "13px",
+    color: "#475569",
   }
 };
