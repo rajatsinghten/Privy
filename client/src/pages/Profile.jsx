@@ -62,9 +62,9 @@ export default function Profile() {
 const styles = {
   page: { paddingTop: "120px", background: "#f8fafc", minHeight: "100vh", fontFamily: "'Inter', sans-serif" },
   container: { maxWidth: "600px", margin: "0 auto", padding: "0 20px" },
-  card: { background: "#fff", borderRadius: "24px", border: "1px solid #e2e8f0", boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)", overflow: "hidden" },
-  header: { padding: "40px", textAlign: "center", borderBottom: "1px solid #f1f5f9", background: "linear-gradient(to bottom, #f8fafc, #ffffff)" },
-  avatar: { width: "80px", height: "80px", background: "#0f172a", color: "#fff", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "32px", fontWeight: "bold", margin: "0 auto 16px auto", border: "4px solid #fff", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" },
+  card: { background: "#fff", borderRadius: "20px", border: "1px solid #e2e8f0", overflow: "hidden" },
+  header: { padding: "40px", textAlign: "center", borderBottom: "1px solid #f1f5f9", background: "#f8fafc" },
+  avatar: { width: "80px", height: "80px", background: "#0f172a", color: "#fff", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "32px", fontWeight: "bold", margin: "0 auto 16px auto" },
   username: { fontSize: "24px", fontWeight: "800", color: "#0f172a", margin: "0 0 8px 0" },
   badge: { padding: "4px 12px", borderRadius: "20px", color: "#fff", fontSize: "11px", fontWeight: "800", textTransform: "uppercase" },
   infoGrid: { padding: "32px", display: "flex", flexDirection: "column", gap: "24px" },

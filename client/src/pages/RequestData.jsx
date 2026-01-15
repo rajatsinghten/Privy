@@ -194,7 +194,7 @@ const styles = {
   heading: { fontSize: "28px", fontWeight: "800", color: "#0f172a", margin: 0 },
   subheading: { color: "#64748b", fontSize: "15px", marginTop: "8px" },
   grid: { display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "32px", maxWidth: "1200px", margin: "0 auto" },
-  card: { background: "#ffffff", padding: "32px", borderRadius: "16px", border: "1px solid #e2e8f0", boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05)" },
+  card: { background: "#ffffff", padding: "32px", borderRadius: "16px", border: "1px solid #e2e8f0" },
   cardTitle: { fontSize: "18px", fontWeight: "700", color: "#1e293b", marginBottom: "24px", margin: 0 },
   field: { marginBottom: "20px" },
   row: { display: "flex", gap: "16px", marginBottom: "20px" },

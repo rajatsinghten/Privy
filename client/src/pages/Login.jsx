@@ -24,71 +24,83 @@ export default function Login() {
 
   return (
     <div style={styles.page}>
-      <div style={styles.splitLayout}>
-        
-        {/* LEFT SIDE: IMAGE/BRAND AREA */}
-        <div style={styles.imageSection}>
-          <div style={styles.overlayText}>
-            <div style={styles.logoBox}>
-              <div style={styles.logoIcon} />
-              <span style={styles.logoText}>Privy.</span>
-            </div>
-            <h1 style={styles.heroText}>Secure Data Access Gateway</h1>
-            <p style={styles.heroSub}>
-              Advanced privacy enforcement engine for enterprise data governance and risk management.
-            </p>
-          </div>
-          {/* Using a high-quality professional abstract image */}
-          <img 
-            src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2070" 
-            alt="Security" 
-            style={styles.bgImage} 
-          />
-        </div>
-
-        {/* RIGHT SIDE: SIGN-IN FORM */}
-        <div style={styles.formSection}>
-          <div style={styles.formWrapper}>
-            <h2 style={styles.formTitle}>Sign In</h2>
-            <p style={styles.formSub}>Enter your credentials to access the console</p>
-
-            <form onSubmit={handleSubmit} style={styles.form}>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Username</label>
-                <input
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  style={styles.input}
-                  placeholder="e.g. admin"
-                />
+      <div style={styles.container}>
+        <div style={styles.card}>
+          <div style={styles.cardContent}>
+            {/* LEFT SIDE: LOGIN FORM */}
+            <form onSubmit={handleSubmit} style={styles.formSection}>
+              <div style={styles.header}>
+                <div style={styles.logoBox}>
+                  <div style={styles.logoIcon} />
+                  <span style={styles.logoText}>Privy</span>
+                </div>
+                <h1 style={styles.title}>Welcome back</h1>
+                <p style={styles.subtitle}>Login to your Privy account</p>
               </div>
 
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Password</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  style={styles.input}
-                  placeholder="••••••••"
-                />
+              <div style={styles.fieldGroup}>
+                <div style={styles.field}>
+                  <label style={styles.label} htmlFor="username">Username</label>
+                  <input
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    style={styles.input}
+                    placeholder="admin"
+                    required
+                  />
+                </div>
+
+                <div style={styles.field}>
+                  <div style={styles.labelRow}>
+                    <label style={styles.label} htmlFor="password">Password</label>
+                  </div>
+                  <input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    style={styles.input}
+                    placeholder="••••••••"
+                    required
+                  />
+                </div>
+
+                {error && <div style={styles.errorText}>{error}</div>}
+
+                <button type="submit" style={styles.loginBtn}>Login</button>
               </div>
 
-              {error && <div style={styles.errorText}>{error}</div>}
-
-              <button style={styles.loginBtn}>Login to Dashboard</button>
+              <div style={styles.footer}>
+                By continuing, you agree to Privy's Terms of Service and Privacy Policy.
+              </div>
             </form>
 
-            <div style={styles.demoBox}>
-              <span style={styles.demoTitle}>DEMO CREDENTIALS</span>
-              <div style={styles.demoDetails}>
-                <span><strong>Admin:</strong> admin / admin123</span>
-                <span><strong>Analyst:</strong> analyst / analyst123</span>
+            {/* RIGHT SIDE: IMAGE */}
+            <div style={styles.imageSection}>
+              <div style={styles.imageOverlay}>
+                <h2 style={styles.imageTitle}>Secure Data Access Gateway</h2>
+                <p style={styles.imageDesc}>
+                  Advanced privacy enforcement engine for enterprise data governance and risk management.
+                </p>
+                <div style={styles.featureList}>
+                  <div style={styles.featureItem}>
+                    <span style={styles.featureIcon}>✓</span>
+                    <span>Role-based access control</span>
+                  </div>
+                  <div style={styles.featureItem}>
+                    <span style={styles.featureIcon}>✓</span>
+                    <span>Real-time risk assessment</span>
+                  </div>
+                  <div style={styles.featureItem}>
+                    <span style={styles.featureIcon}>✓</span>
+                    <span>Privacy budget enforcement</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );
@@ -96,148 +108,215 @@ export default function Login() {
 
 const styles = {
   page: {
-    height: "100vh",
-    width: "100vw",
-    background: "#ffffff",
-    fontFamily: "'Inter', sans-serif",
-    overflow: "hidden",
-  },
-  splitLayout: {
-    display: "flex",
-    height: "100%",
-  },
-  imageSection: {
-    flex: "1.2",
-    position: "relative",
-    background: "#f1f5f9",
+    minHeight: "100vh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    background: "#f8fafc",
+    padding: "20px",
+    fontFamily: "'Inter', sans-serif",
   },
-  bgImage: {
+  container: {
     width: "100%",
-    height: "100%",
-    objectFit: "cover",
+    maxWidth: "1100px",
   },
-  overlayText: {
-    position: "absolute",
-    zIndex: 2,
-    left: "60px",
-    bottom: "60px",
-    right: "60px",
-    color: "#fff",
-    background: "rgba(15, 23, 42, 0.4)",
-    backdropFilter: "blur(10px)",
-    padding: "40px",
-    borderRadius: "20px",
+  card: {
+    background: "#ffffff",
+    borderRadius: "16px",
+    border: "1px solid #e2e8f0",
+    overflow: "hidden",
+  },
+  cardContent: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    "@media (max-width: 768px)": {
+      gridTemplateColumns: "1fr",
+    },
+  },
+  formSection: {
+    padding: "48px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "32px",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    textAlign: "center",
+    gap: "8px",
   },
   logoBox: {
     display: "flex",
     alignItems: "center",
     gap: "10px",
-    marginBottom: "20px",
+    marginBottom: "16px",
   },
   logoIcon: {
-    width: "12px",
-    height: "12px",
+    width: "14px",
+    height: "14px",
     background: "#3b82f6",
-    borderRadius: "2px",
+    borderRadius: "3px",
   },
   logoText: {
     fontSize: "20px",
     fontWeight: "800",
+    color: "#0f172a",
     letterSpacing: "-0.5px",
   },
-  heroText: {
-    fontSize: "36px",
-    fontWeight: "800",
-    margin: "0 0 16px 0",
-    lineHeight: "1.1",
-  },
-  heroSub: {
-    fontSize: "16px",
-    opacity: "0.9",
-    lineHeight: "1.5",
-  },
-  formSection: {
-    flex: "1",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "40px",
-  },
-  formWrapper: {
-    width: "100%",
-    maxWidth: "400px",
-  },
-  formTitle: {
-    fontSize: "32px",
-    fontWeight: "800",
+  title: {
+    fontSize: "28px",
+    fontWeight: "700",
     color: "#0f172a",
-    margin: "0 0 8px 0",
+    margin: 0,
   },
-  formSub: {
-    fontSize: "15px",
+  subtitle: {
+    fontSize: "14px",
     color: "#64748b",
-    marginBottom: "40px",
+    margin: 0,
   },
-  inputGroup: {
-    marginBottom: "24px",
+  fieldGroup: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
+  },
+  field: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
   },
   label: {
-    display: "block",
-    fontSize: "13px",
-    fontWeight: "700",
-    color: "#475569",
-    marginBottom: "8px",
+    fontSize: "14px",
+    fontWeight: "500",
+    color: "#0f172a",
+  },
+  labelRow: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   input: {
     width: "100%",
-    padding: "14px",
+    padding: "10px 14px",
     borderRadius: "8px",
     border: "1px solid #e2e8f0",
-    background: "#f8fafc",
-    fontSize: "15px",
+    fontSize: "14px",
     outline: "none",
+    transition: "border-color 0.2s, box-shadow 0.2s",
     boxSizing: "border-box",
   },
   loginBtn: {
     width: "100%",
-    padding: "16px",
-    background: "#0f172a", // Dark professional black/blue button
-    color: "#fff",
+    padding: "10px",
+    background: "#0f172a",
+    color: "#ffffff",
     border: "none",
     borderRadius: "8px",
-    fontWeight: "700",
-    fontSize: "15px",
+    fontSize: "14px",
+    fontWeight: "600",
     cursor: "pointer",
-    marginTop: "10px",
+    transition: "opacity 0.2s",
   },
   errorText: {
     color: "#ef4444",
-    fontSize: "13px",
+    fontSize: "14px",
+    padding: "12px",
+    background: "#fef2f2",
+    borderRadius: "8px",
+    border: "1px solid #fee2e2",
     textAlign: "center",
-    marginBottom: "16px",
+  },
+  separator: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    margin: "0",
+  },
+  separatorLine: {
+    flex: 1,
+    height: "1px",
+    background: "#e2e8f0",
+  },
+  separatorText: {
+    fontSize: "12px",
+    color: "#64748b",
+    fontWeight: "500",
   },
   demoBox: {
-    marginTop: "40px",
-    padding: "20px",
-    background: "#f1f5f9",
-    borderRadius: "12px",
-  },
-  demoTitle: {
-    display: "block",
-    fontSize: "11px",
-    fontWeight: "800",
-    color: "#64748b",
-    marginBottom: "8px",
-    letterSpacing: "0.5px",
-  },
-  demoDetails: {
     display: "flex",
     flexDirection: "column",
-    gap: "4px",
+    gap: "8px",
+    padding: "16px",
+    background: "#f8fafc",
+    borderRadius: "8px",
+    border: "1px solid #e2e8f0",
+  },
+  demoItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
     fontSize: "13px",
+  },
+  demoLabel: {
+    fontWeight: "600",
     color: "#475569",
-  }
+  },
+  demoValue: {
+    color: "#64748b",
+    fontFamily: "monospace",
+  },
+  footer: {
+    fontSize: "12px",
+    color: "#94a3b8",
+    textAlign: "center",
+    lineHeight: "1.5",
+  },
+  imageSection: {
+    position: "relative",
+    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "48px",
+  },
+  imageOverlay: {
+    color: "#ffffff",
+    textAlign: "center",
+    maxWidth: "400px",
+  },
+  imageTitle: {
+    fontSize: "32px",
+    fontWeight: "800",
+    margin: "0 0 16px 0",
+    lineHeight: "1.2",
+  },
+  imageDesc: {
+    fontSize: "16px",
+    opacity: "0.9",
+    lineHeight: "1.6",
+    marginBottom: "32px",
+  },
+  featureList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+    textAlign: "left",
+  },
+  featureItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    fontSize: "14px",
+  },
+  featureIcon: {
+    width: "20px",
+    height: "20px",
+    background: "rgba(255, 255, 255, 0.2)",
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "12px",
+    flexShrink: 0,
+  },
 };

@@ -100,7 +100,7 @@ const styles = {
   subtitle: { color: "#64748b", fontSize: "14px", marginTop: "4px" },
   refreshBtn: { padding: "10px 20px", background: "#fff", border: "1px solid #e2e8f0", borderRadius: "8px", cursor: "pointer", fontWeight: "600", color: "#1e293b" },
   errorBox: { padding: "16px", background: "#fef2f2", border: "1px solid #fee2e2", color: "#b91c1c", borderRadius: "8px", marginBottom: "20px", fontSize: "14px" },
-  card: { background: "#fff", borderRadius: "12px", border: "1px solid #e2e8f0", boxShadow: "0 1px 3px rgba(0,0,0,0.1)", overflowX: "auto" },
+  card: { background: "#fff", borderRadius: "12px", border: "1px solid #e2e8f0", overflowX: "auto" },
   table: { width: "100%", borderCollapse: "collapse", textAlign: "left" },
   theadRow: { background: "#f8fafc", borderBottom: "1px solid #e2e8f0" },
   th: { padding: "16px", fontSize: "12px", fontWeight: "700", color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" },

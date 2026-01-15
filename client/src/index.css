@@ -53,7 +53,7 @@ label {
   background: white;
   padding: 24px;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
 }
 
 .card + .card {

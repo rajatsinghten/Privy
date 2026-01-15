@@ -117,7 +117,7 @@ const styles = {
   search: { padding: '10px 16px', borderRadius: '8px', border: '1px solid #e2e8f0', outline: 'none', width: '250px', fontSize: '14px' },
   infoBox: { display: "flex", gap: "16px", background: "#eff6ff", padding: "20px", borderRadius: "12px", border: "1px solid #bfdbfe", marginBottom: "32px", alignItems: "center" },
   infoIcon: { fontSize: "24px" },
-  card: { background: "#fff", borderRadius: "16px", border: "1px solid #e2e8f0", boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05)", overflow: "hidden" },
+  card: { background: "#fff", borderRadius: "16px", border: "1px solid #e2e8f0", overflow: "hidden" },
   table: { width: "100%", borderCollapse: "collapse", textAlign: "left" },
   th: { padding: "16px 24px", background: "#f8fafc", borderBottom: "1px solid #e2e8f0", fontSize: "11px", fontWeight: "700", color: "#475569", textTransform: "uppercase", letterSpacing: '0.05em' },
   tr: { borderBottom: "1px solid #f1f5f9" },

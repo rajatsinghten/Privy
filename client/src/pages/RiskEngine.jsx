@@ -95,7 +95,7 @@ const styles = {
   title: { fontSize: "32px", fontWeight: "800", color: "#0f172a", margin: 0 },
   subtitle: { color: "#64748b", fontSize: "16px", marginTop: "8px" },
   grid: { display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "24px", marginBottom: "24px" },
-  card: { background: "#fff", padding: "32px", borderRadius: "16px", border: "1px solid #e2e8f0", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" },
+  card: { background: "#fff", padding: "32px", borderRadius: "16px", border: "1px solid #e2e8f0" },
   cardTitle: { fontSize: "18px", fontWeight: "700", marginBottom: "24px", color: "#1e293b" },
   gaugeContainer: { margin: "30px 0" },
   gaugeBg: { height: "24px", background: "#f1f5f9", borderRadius: "12px", position: "relative", overflow: "hidden", border: "1px solid #e2e8f0" },

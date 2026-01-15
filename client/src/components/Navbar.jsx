@@ -91,13 +91,12 @@ export default function Navbar() {
     background: "#1e3a8a",
     color: "#ffffff",
     border: "none",
-    padding: "12px 24px",
+    padding: "10px 20px",
     borderRadius: "8px",
-    fontSize: "15px",
+    fontSize: "14px",
     fontWeight: "600",
     cursor: "pointer",
     transition: "all 0.2s ease",
-    boxShadow: "0 4px 6px -1px rgba(30, 58, 138, 0.2)",
   };
 
   return (
@@ -159,7 +158,6 @@ export default function Navbar() {
                 left: "0",
                 background: "#fff",
                 borderRadius: "12px",
-                boxShadow: "0 10px 40px rgba(0,0,0,0.15)",
                 padding: "8px 0",
                 minWidth: "220px",
                 zIndex: 1001,
